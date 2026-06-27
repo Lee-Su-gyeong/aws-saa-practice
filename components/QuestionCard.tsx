@@ -11,6 +11,31 @@ interface Props {
   onNext: (isCorrect: boolean) => void;
 }
 
+// 120자 기준으로 문장 경계에서 줄바꿈 삽입
+function formatQuestionText(text: string): string {
+  if (text.length <= 120) return text;
+
+  const sentences = text.split(/(?<=[.?!])\s+/);
+  if (sentences.length <= 1) return text;
+
+  const groups: string[] = [];
+  let current = '';
+
+  for (const s of sentences) {
+    if (!current) {
+      current = s;
+    } else if (current.length >= 120) {
+      groups.push(current);
+      current = s;
+    } else {
+      current += ' ' + s;
+    }
+  }
+  if (current) groups.push(current);
+
+  return groups.join('\n');
+}
+
 function ExplanationBlock({ explanation }: { explanation: string }) {
   if (!explanation) return null;
 
@@ -109,7 +134,7 @@ export default function QuestionCard({ question, index, total, onNext }: Props) 
 
       {/* 문제 */}
       <p className="text-base md:text-lg leading-relaxed text-gray-900 dark:text-gray-100 whitespace-pre-wrap pt-1">
-        {question.question}
+        {formatQuestionText(question.question)}
       </p>
 
       {/* 다중선택 안내 */}
