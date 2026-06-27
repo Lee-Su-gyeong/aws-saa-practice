@@ -17,29 +17,29 @@ function ExplanationBlock({ explanation }: { explanation: string }) {
   const lines = explanation.split('\n').map(l => l.trim()).filter(Boolean);
 
   return (
-    <div className="space-y-2 mt-2">
+    <div className="space-y-3 mt-2">
       {lines.map((line, i) => {
         const isCorrect = line.startsWith('✓');
         const isWrong = line.startsWith('✗');
 
         if (isCorrect) {
           return (
-            <div key={i} className="flex gap-2 text-sm">
-              <span className="text-green-400 font-bold shrink-0">✓</span>
-              <span className="text-green-300">{line.slice(1).trim()}</span>
+            <div key={i} className="flex gap-2 text-sm md:text-base leading-relaxed">
+              <span className="text-green-500 font-bold shrink-0 mt-0.5">✓</span>
+              <span className="text-green-700 dark:text-green-300">{line.slice(1).trim()}</span>
             </div>
           );
         }
         if (isWrong) {
           return (
-            <div key={i} className="flex gap-2 text-sm">
-              <span className="text-red-400 font-bold shrink-0">✗</span>
-              <span className="text-gray-400">{line.slice(1).trim()}</span>
+            <div key={i} className="flex gap-2 text-sm md:text-base leading-relaxed">
+              <span className="text-red-400 font-bold shrink-0 mt-0.5">✗</span>
+              <span className="text-gray-500 dark:text-gray-400">{line.slice(1).trim()}</span>
             </div>
           );
         }
         return (
-          <p key={i} className="text-sm text-gray-300">{line}</p>
+          <p key={i} className="text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed">{line}</p>
         );
       })}
     </div>
@@ -81,18 +81,18 @@ export default function QuestionCard({ question, index, total, onNext }: Props) 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* 진행 상태 */}
-      <div className="flex items-center justify-between text-sm text-gray-400">
-        <span>{index + 1} / {total}</span>
+      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+        <span className="font-medium">{index + 1} / {total}</span>
         <div className="flex gap-2 items-center">
           {isMulti && (
-            <span className="bg-blue-900/40 text-blue-300 px-2 py-0.5 rounded text-xs">
+            <span className="bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 px-2 py-0.5 rounded-full text-xs font-medium">
               {answerLetters.length}개 선택
             </span>
           )}
           {question.category && (
-            <span className="bg-orange-900/40 text-orange-300 px-2 py-0.5 rounded text-xs">
+            <span className="bg-orange-100 dark:bg-orange-900/40 text-orange-600 dark:text-orange-300 px-2 py-0.5 rounded-full text-xs font-medium">
               {question.category}
             </span>
           )}
@@ -100,25 +100,27 @@ export default function QuestionCard({ question, index, total, onNext }: Props) 
       </div>
 
       {/* 진행 바 */}
-      <div className="w-full bg-gray-800 rounded-full h-1.5">
+      <div className="w-full bg-gray-200 dark:bg-gray-800 rounded-full h-1.5">
         <div
-          className="bg-orange-400 h-1.5 rounded-full transition-all"
+          className="bg-orange-400 h-1.5 rounded-full transition-all duration-300"
           style={{ width: `${((index + 1) / total) * 100}%` }}
         />
       </div>
 
       {/* 문제 */}
-      <p className="text-base leading-relaxed whitespace-pre-wrap">{question.question}</p>
+      <p className="text-base md:text-lg leading-relaxed text-gray-900 dark:text-gray-100 whitespace-pre-wrap pt-1">
+        {question.question}
+      </p>
 
       {/* 다중선택 안내 */}
       {isMulti && !submitted && (
-        <p className="text-xs text-blue-400">
+        <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
           정답을 {answerLetters.length}개 선택하세요 ({selected.length}/{answerLetters.length} 선택됨)
         </p>
       )}
 
       {/* 보기 */}
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {question.options.map((opt) => {
           const letter = opt.charAt(0);
           const isSelected = selected.includes(letter);
@@ -138,28 +140,28 @@ export default function QuestionCard({ question, index, total, onNext }: Props) 
 
       {/* 해설 */}
       {submitted && (
-        <div className="rounded-lg border border-gray-700 bg-gray-900 p-4">
-          <p className={`font-semibold text-sm mb-3 ${isCorrect ? 'text-green-400' : 'text-red-400'}`}>
-            {isCorrect ? '정답입니다!' : `오답 — 정답: ${question.answer}`}
+        <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 md:p-5">
+          <p className={`font-semibold text-base mb-3 ${isCorrect ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+            {isCorrect ? '✓ 정답입니다!' : `✗ 오답 — 정답: ${question.answer}`}
           </p>
           <ExplanationBlock explanation={question.explanation} />
         </div>
       )}
 
       {/* 버튼 */}
-      <div className="flex gap-3 pt-2">
+      <div className="flex gap-3 pt-1">
         {!submitted ? (
           <button
             onClick={handleSubmit}
             disabled={selected.length === 0}
-            className="flex-1 py-3 rounded-lg bg-orange-500 hover:bg-orange-400 disabled:opacity-40 disabled:cursor-not-allowed font-semibold transition-colors"
+            className="flex-1 py-4 rounded-xl bg-orange-500 hover:bg-orange-400 disabled:opacity-40 disabled:cursor-not-allowed font-semibold text-white text-base transition-colors"
           >
             정답 확인
           </button>
         ) : (
           <button
             onClick={handleNext}
-            className="flex-1 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 font-semibold transition-colors"
+            className="flex-1 py-4 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-white text-base transition-colors"
           >
             {index + 1 < total ? '다음 문제 →' : '결과 보기'}
           </button>

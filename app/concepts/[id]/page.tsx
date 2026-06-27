@@ -25,8 +25,8 @@ export default function ConceptViewerPage() {
   if (!concept) {
     return (
       <div className="text-center py-20 space-y-4">
-        <p className="text-red-400">PDF를 찾을 수 없습니다.</p>
-        <a href="/concepts" className="text-orange-400 underline">목록으로</a>
+        <p className="text-red-500">PDF를 찾을 수 없습니다.</p>
+        <a href="/concepts" className="text-orange-500 underline">목록으로</a>
       </div>
     );
   }
@@ -35,26 +35,26 @@ export default function ConceptViewerPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div>
-          <a href="/concepts" className="text-sm text-gray-500 hover:text-gray-300 transition-colors">
+      <div className="flex items-center justify-between gap-4">
+        <div className="min-w-0">
+          <a href="/concepts" className="text-sm text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
             ← 목록으로
           </a>
-          <h1 className="text-xl font-bold mt-1">{concept.title}</h1>
+          <h1 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100 mt-1 truncate">{concept.title}</h1>
         </div>
         <a
           href={pdfUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm px-3 py-1.5 rounded-lg border border-gray-700 hover:border-orange-500 text-gray-300 hover:text-orange-300 transition-all"
+          className="text-sm px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-orange-400 dark:hover:border-orange-500 text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-300 transition-all shrink-0"
         >
-          새 탭에서 열기 ↗
+          새 탭 ↗
         </a>
       </div>
 
       <iframe
         src={pdfUrl}
-        className="w-full rounded-lg border border-gray-700"
+        className="w-full rounded-xl border border-gray-200 dark:border-gray-700"
         style={{ height: 'calc(100vh - 160px)' }}
         title={concept.title}
       />

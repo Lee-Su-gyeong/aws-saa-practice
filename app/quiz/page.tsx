@@ -73,21 +73,21 @@ function QuizContent() {
   );
 
   if (loading) {
-    return <div className="flex items-center justify-center py-20 text-gray-400">문제를 불러오는 중...</div>;
+    return <div className="flex items-center justify-center py-20 text-gray-500 dark:text-gray-400">문제를 불러오는 중...</div>;
   }
   if (error) {
     return (
       <div className="text-center py-20 space-y-4">
-        <p className="text-red-400">{error}</p>
-        <a href="/" className="text-orange-400 underline">홈으로</a>
+        <p className="text-red-500 dark:text-red-400">{error}</p>
+        <a href="/" className="text-orange-500 underline">홈으로</a>
       </div>
     );
   }
   if (questions.length === 0) {
     return (
       <div className="text-center py-20 space-y-4">
-        <p className="text-gray-400">문제가 없습니다.</p>
-        <a href="/" className="text-orange-400 underline">홈으로</a>
+        <p className="text-gray-500 dark:text-gray-400">문제가 없습니다.</p>
+        <a href="/" className="text-orange-500 underline">홈으로</a>
       </div>
     );
   }
